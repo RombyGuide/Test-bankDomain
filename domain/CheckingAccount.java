@@ -1,7 +1,7 @@
 package com.mybank.domain;
 
 public class CheckingAccount extends Account {
-    private double overdraftAmount;
+    private final double overdraftAmount;
     public  CheckingAccount(double initBalance, double overdraftAmount) {
         balance = initBalance;
         this.overdraftAmount = overdraftAmount;
@@ -11,11 +11,15 @@ public class CheckingAccount extends Account {
     }
 
     @Override
-    public boolean withdraw(double amt) {
+    public boolean withdraw(double amt) throws Exception {
         if (amt <= balance + overdraftAmount) {
             balance -= amt;
             return true;
         }
-        return false;
+        throw new OverdraftException("Error! Insufficient funds", amt - balance - overdraftAmount);
+    }
+
+    public double getOverdraftAmount() {
+        return overdraftAmount;
     }
 }

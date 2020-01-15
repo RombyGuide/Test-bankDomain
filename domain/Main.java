@@ -1,10 +1,13 @@
 package com.mybank.domain;
 
+import java.util.Objects;
+
 public class Main {
     public static void main(String[] args) {
-        Bank bank = new Bank();
-        Customer customer1 = new Customer("John Doe");
-        Customer customer2 = new Customer("Jane Doe");
+        Bank bank = Bank.fabBank();
+
+        Customer customer1 = new Customer("John", " Doe");
+        Customer customer2 = new Customer("Jane", " Doe");
 
         SavingsAccount joneSavings = new SavingsAccount(1000, 7);
         CheckingAccount johnAccount = new CheckingAccount(5000, 1000);
@@ -14,18 +17,28 @@ public class Main {
         customer1.addAccount(johnAccount);
         customer2.addAccount(janeAccount);
 
-        bank.addCustomer(customer1);
-        bank.addCustomer(customer2);
+        Bank.addCustomer(customer1);
+        Bank.addCustomer(customer2);
 
-        System.out.println(bank.getCustomer(0) + "\n");
+        System.out.println(Bank.getCustomer(0) + "\n");
 
-        bank.getCustomer(0).getAccount(0).deposit(2000);
-        bank.getCustomer(0).getAccount(1).withdraw(5500);
-        ((SavingsAccount) bank.getCustomer(0).getAccount(0)).addInterestRate();
+        Objects.requireNonNull(Bank.getCustomer(0)).getAccount(0).deposit(2000);
+        try {
+            Objects.requireNonNull(Bank.getCustomer(0)).getAccount(1).withdraw(7500);
+        } catch (OverdraftException ex) {
+            System.out.println(ex.getMessage() + ": $" + ex.getDeficit() + "!\n");
+        } catch (Exception e) {
+            System.out.println("Something went wrong" + e.getMessage());
+        }
+        ((SavingsAccount) Objects.requireNonNull(Bank.getCustomer(0)).getAccount(0)).addInterestRate();
 
-        System.out.println(bank.getCustomer(0).getAccount(0).getBalance());
-        System.out.println(bank.getCustomer(0).getAccount(1).getBalance() + "\n");
+//        print(bank);
+    }
 
-        System.out.println(bank.getCustomer(1));
+    private static void print(Bank bank) {
+        System.out.println(Objects.requireNonNull(Bank.getCustomer(0)).getAccount(0).getBalance());
+        System.out.println(Objects.requireNonNull(Bank.getCustomer(0)).getAccount(1).getBalance() + "\n");
+
+          System.out.println(Bank.getCustomer(1));
     }
 }

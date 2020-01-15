@@ -1,7 +1,7 @@
 package com.mybank.domain;
 
 public class Account {
-    protected double balance;
+    double balance;
 
     protected Account(double balance) {
         if (balance >= 0) {
@@ -10,22 +10,19 @@ public class Account {
             this.balance = 0;
         }
     }
-    public Account() {
+    Account() {
         this.balance = 0;
     }
-    public boolean deposit(double amt) {
+    public void deposit(double amt) {
         if (amt > 0) {
             balance += amt;
-            return true;
         }
-        return false;
     }
-    public boolean withdraw(double amt) {
+    public boolean withdraw(double amt) throws Exception {
         if (amt < 0) {
             balance -= amt;
             return true;
-        }
-        return false;
+        } return false;
     }
     public double getBalance() {
         return balance;

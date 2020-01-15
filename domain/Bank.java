@@ -1,21 +1,31 @@
 package com.mybank.domain;
 
-public class Bank {
-    private Customer[] customers;
-    private int numOfClients;
+import java.util.ArrayList;
 
-    public Bank() {
-        customers = new Customer[1000];
-        numOfClients = 0;
+public class Bank {
+    private static ArrayList<Customer> customers = new ArrayList<>();
+    private static int numOfClients = 0;
+    private static final Bank myBank = new Bank();
+
+    private Bank() {
+
     }
-    public Customer getCustomer(int customerNo) {
-        if (customerNo < customers.length) {
-            return customers[customerNo];
+    public static Customer getCustomer(int customerNo) {
+        if (customerNo < customers.size()) {
+            return customers.get(customerNo);
         }
         return null;
     }
-    public void addCustomer(Customer newCustomer) {
-        customers[numOfClients] = newCustomer;
+    public static void addCustomer(Customer newCustomer) {
+        customers.add(newCustomer);
         numOfClients++;
+    }
+
+    public static int getNumOfClients() {
+        return numOfClients;
+    }
+
+    public static Bank fabBank() { // fabric method
+        return myBank;
     }
 }
